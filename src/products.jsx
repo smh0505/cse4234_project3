@@ -6,15 +6,42 @@ import Detail from "./product";
 export default function Products() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [people, setPeople] = useState([]);
   const [items, setItems] = useState([]);
 
+  const [modal, setModal] = useState(false);
+  const [modalId, setModalId] = useState(0);
+
+  /**
+   * @param {number} id
+   */
+  const toggleModal = (id) => {
+    setModal(!modal);
+    setModalId(id);
+  };
+
+  const getRevenue = (item) => {
+    let sum = 0;
+    people.forEach((purchases) => {
+      const target = purchases.find(
+        (purchase) => purchase.productID === item.id
+      );
+      if (target) sum += target.quantity;
+    });
+    return sum * item.price;
+  };
+
   useEffect(() => {
-    fetch("products.json")
-      .then((res) => res.json())
+    const fetchCustomers = fetch("customers.json");
+    const fetchProducts = fetch("products.json");
+
+    Promise.all([fetchCustomers, fetchProducts])
+      .then(async (values) => [await values[0].json(), await values[1].json()])
       .then(
-        (result) => {
+        (results) => {
           setIsLoaded(true);
-          setItems(result);
+          setPeople(results[0].map((x) => x.purchases));
+          setItems(results[1]);
         },
         (error) => {
           setIsLoaded(true);
@@ -47,17 +74,29 @@ export default function Products() {
           {items.map((item) => (
             <section key={item.id} className="row">
               <p>{item.title}</p>
-              <p>{item.price}</p>
-              <p>{item.category}</p>
-              <p>{item.rating.rate}</p>
-              <p>{item.inventory}</p>
-              <p></p>
               <p>
-                <button onClick={Detail(item)}>Learn More</button>
+                {item.price.toLocaleString("en", { minimumFractionDigits: 2 })}
+              </p>
+              <p>{item.category}</p>
+              <p>{item.rating.rate.toFixed(1)}</p>
+              <p>{item.inventory}</p>
+              <p>
+                {getRevenue(item).toLocaleString("en", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+              <p>
+                <button onClick={() => toggleModal(item.id)}>Learn More</button>
               </p>
             </section>
           ))}
         </section>
+
+        <Detail
+          product={items.find((item) => item.id === modalId)}
+          isOpen={modal}
+          handleOpen={() => toggleModal(modalId)}
+        ></Detail>
       </main>
     );
   }

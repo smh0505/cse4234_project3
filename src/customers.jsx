@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
-import "./styles/customers.css"
+import "./styles/customers.css";
 
 export default function Customers() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [people, setPeople] = useState([]);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("customers.json")
-      .then((res) => res.json())
+    const fetchCustomers = fetch("customers.json");
+    const fetchProducts = fetch("products.json");
+
+    Promise.all([fetchCustomers, fetchProducts])
+      .then(async (values) => [await values[0].json(), await values[1].json()])
       .then(
-        (result) => {
+        (results) => {
           setIsLoaded(true);
-          setItems(result);
+          setPeople(results[0]);
+          setItems(results[1]);
         },
         (error) => {
           setIsLoaded(true);
@@ -20,6 +25,52 @@ export default function Customers() {
         }
       );
   }, []);
+
+  /**
+   * @param {{title: string, first: string, last: string}} name
+   * @returns {string}
+   */
+  const getName = (name) => {
+    return name.title + " " + name.first + " " + name.last;
+  };
+
+  /**
+   * @param {{
+   *   street: {
+   *     number: number,
+   *     name: string
+   *   },
+   *   city: string,
+   *   state: string,
+   *   country: string,
+   *   postcode: number | string
+   * }} addr
+   * @returns {string}
+   */
+  const getAddress = (addr) => {
+    let parts = [
+      addr.street.number + " " + addr.street.name,
+      addr.city,
+      addr.state + " " + addr.postcode,
+      addr.country,
+    ];
+    return parts.join(", ");
+  };
+
+  /**
+   * @param {{productID: number, quantity: number}[]} purchases
+   * @returns {number}
+   */
+  const getRevenue = (purchases) => {
+    let sum = 0;
+    purchases.forEach(
+      (purchase) =>
+        (sum +=
+          items.find((item) => item.id === purchase.productID).price *
+          purchase.quantity)
+    );
+    return sum;
+  };
 
   if (error) {
     return <section>Error: {error.message}</section>;
@@ -40,13 +91,19 @@ export default function Customers() {
             <p>Revenue</p>
             <p></p>
           </section>
-          {items.map((item) => (
-            <section key={getName(item.name)} className="row">
-              <p>{getName(item.name)}</p>
-              <p>{getAddress(item.location)}</p>
-              <p>{item.email}</p>
-              <p></p>
-              <p><img src={item.picture.thumbnail} /></p>
+          {people.map((person) => (
+            <section key={getName(person.name)} className="row">
+              <p>{getName(person.name)}</p>
+              <p>{getAddress(person.location)}</p>
+              <p>{person.email}</p>
+              <p>
+                {getRevenue(person.purchases).toLocaleString("en", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
+              <p>
+                <img src={person.picture.thumbnail} />
+              </p>
             </section>
           ))}
         </section>
@@ -54,33 +111,3 @@ export default function Customers() {
     );
   }
 }
-
-/**
- * @param {{title: string, first: string, last: string}} name
- * @returns {string}
- */
-const getName = (name) => {
-  return name.title + " " + name.first + " " + name.last;
-};
-
-/**
- * @param {{
- *   street: {
- *     number: number, 
- *     name: string
- *   }, 
- *   city: string, 
- *   state: string, 
- *   country: string, 
- *   postcode: number | string
- * }} addr
- */
-const getAddress = (addr) => {
-  let parts = [
-    addr.street.number + " " + addr.street.name,
-    addr.city,
-    addr.state + " " + addr.postcode,
-    addr.country
-  ]
-  return parts.join(", ")
-};
