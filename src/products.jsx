@@ -20,6 +20,10 @@ export default function Products() {
     setModalId(id);
   };
 
+  /**
+   * @param {{id: number, price: number}} item 
+   * @returns 
+   */
   const getRevenue = (item) => {
     let sum = 0;
     people.forEach((purchases) => {

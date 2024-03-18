@@ -17,7 +17,7 @@ export default function Customers() {
         (results) => {
           setIsLoaded(true);
           setPeople(results[0]);
-          setItems(results[1]);
+          setItems(results[1].map((x) => ({ id: x.id, price: x.price })));
         },
         (error) => {
           setIsLoaded(true);
