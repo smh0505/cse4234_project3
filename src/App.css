@@ -1,0 +1,224 @@
+body {
+  background-color: #ffffff;
+  font-family: Segoe UI, Roboto, Helvetica, Arial, serif;
+  color:  #000;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: space-between; /* Align items to opposite ends */
+  align-items: center; /* Center items vertically */
+  padding: 0 20px; /* Add padding to the left and right sides of the header */
+}
+
+nav {
+  order: 2; /* Move the navigation to the end of the flex container */
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+nav ul li:last-child {
+  margin-right: 0; /* Remove margin from the first list item */
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #000;
+  background-color: #fff;
+  padding: 8px 16px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add box-shadow to transition */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Add a subtle shadow */
+}
+
+nav ul li a:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Increase shadow on hover */
+}
+
+.main-title {
+  margin: 0; /* Remove default margin */
+  background: linear-gradient(to right, #6b5b95, #feb236);
+  -webkit-background-clip: text; /* Apply gradient to text */
+  color: transparent; /* Hide original text color */
+}
+
+section {
+  padding: 20px;
+}
+
+/* TEAM SECTION */
+
+.the-team-centered {
+  text-align: center; /* Center the text */
+}
+
+.team-section {
+  display: flex;
+  flex-wrap: wrap; /* Enable wrapping for multiple rows */
+  justify-content: center;
+}
+
+.team-member {
+  margin: 20px;
+  flex: 0 1 calc(33.33% - 40px); /* Set width for each team member (33.33% - margin) */
+}
+
+.team-member img {
+  width: 50%;
+  height: auto;
+  border-radius: 50%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.team-member h3 {
+  margin: 10px 0; /* Add margin below the image */
+}
+
+.team-member:hover img {
+  transform: scale(1.1);
+}
+
+.team-member .info {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.team-member:hover .info {
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .team-member {
+    flex-basis: calc(50% - 40px); /* Set width for each team member on smaller screens (50% - margin) */
+  }
+}
+
+
+/* FOOTER */
+footer {
+  background-color: #555555; /* rust orange */
+  color: #ffffff; /* warm white */
+  padding: 10px;
+  text-align: center;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+.footer-main, social-media-list{
+  list-style: none;
+  padding: 0;
+}
+
+.footer-main li, .social-media-list li {
+  display: inline-block; /* Display list items horizontally */
+  margin: 0 15px; /* Adjust the margin between list items */
+}
+
+.footer-main li a, .social-media-list li a {
+  text-decoration: underline; /* Underline the links */
+  color: #fff; /* Set the text color for the links */
+}
+.footer-main li a:hover, .social-media-list li a:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  margin-top: 10px; /* Adjust margin as needed */
+  font-size: 14px; /* Adjust font size as needed */
+}
+
+.about-section{
+  padding: 2em;
+  color: #ffffff;
+}
+
+h2 {
+  position: relative;
+}
+
+h2:after {
+  content: "";
+  display: block;
+  width: 100%; /* Adjust the width of the line as needed */
+  height: 2px; /* Adjust the height or thickness of the line as needed */
+  background-color: #ffffff; /* Choose the color of the line */
+  position: absolute;
+  bottom: -5px; /* Adjust the distance of the line from the text as needed */
+  left: 0;
+}
+
+/* Media query for smaller screens up to 768px wide */
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav {
+    flex-direction: column; /* Set the flex direction to row for a horizontal layout */
+    text-align: center;
+  }
+
+  nav a {
+    width: 100%; /* Make each navigation link take the full width */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    margin: 0; /* Remove any margin for a cleaner appearance */
+  }
+
+  nav ul {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  nav li {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+  }
+  footer ul.footer-main {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove any padding */
+  }
+
+  footer ul.footer-main li {
+    position: relative; /* Create a relative positioning context for the ::before pseudo-element */
+    padding-left: 20px; /* Add padding to create space for the greater-than sign */
+  }
+
+  footer ul.footer-main li::before {
+    content: ">"; /* Set the greater-than sign as content for the ::before pseudo-element */
+    position: absolute;
+    left: 0; /* Position the greater-than sign to the left of the list item */
+    color: #ffffff; /* Set the color of the greater-than sign */
+  }
+  /* Project images block layout for mobile devices */
+  .image-gallery img {
+    width: 100%;
+    max-width: none;
+  }
+}

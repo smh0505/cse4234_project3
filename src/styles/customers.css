@@ -1,0 +1,12 @@
+.customer-table section {
+  padding-block: 0px;
+}
+
+.customer-table section:nth-child(2n) {
+  background-color: lightgray;
+}
+
+.customer-table .row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr
+}

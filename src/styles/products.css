@@ -1,0 +1,16 @@
+.product-table section {
+  padding-block: 0px;
+}
+
+.product-table section:nth-child(2n) {
+  background-color: lightgray;
+}
+
+.product-table .row {
+  display: grid;
+  grid-template-columns: 3fr 100px 1fr 100px 100px 100px 100px;
+}
+
+.header-row {
+  font-weight: bold;
+}
